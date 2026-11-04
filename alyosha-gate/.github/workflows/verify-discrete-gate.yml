@@ -1,0 +1,99 @@
+name: Verify Discrete Gate (Clean Install)
+
+"on":
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Clean Install & Verify (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Upgrade build tools
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+
+      - name: Clean install package
+        # Standard installation from repository root without PYTHONPATH or flag overrides
+        run: |
+          pip install .
+
+      - name: Verify public API import and execution outside repository
+        # Running in an isolated external folder confirms execution from site-packages
+        run: |
+          mkdir -p /tmp/smoke_test
+          cd /tmp/smoke_test
+          python -c '
+          from alyosha_gate import (
+              evaluate_discrete_gate,
+              GateDecision,
+              GateReason,
+              GateMode,
+          )
+
+          # 1. Verification of stable passage (PASS / SOURCE_IDENTIFIED)
+          res_pass = evaluate_discrete_gate(
+              numbers=[4, 8, 12],
+              exponents=[3, 3, 3],
+              threshold=1.0,
+              mode=GateMode.RECTIFIED,
+          )
+          assert res_pass.decision == GateDecision.PASS, f"Expected PASS, got {res_pass.decision}"
+          assert res_pass.reason == GateReason.SOURCE_IDENTIFIED, f"Expected SOURCE_IDENTIFIED, got {res_pass.reason}"
+          assert res_pass.gcd_value == 4
+          assert res_pass.dmod_value == 0.09
+          assert res_pass.source_present is True
+          assert res_pass.is_triggered is False
+
+          # 2. Verification of coprime exclusion (VOID / NO_COMMON_SOURCE)
+          res_void = evaluate_discrete_gate(
+              numbers=[3, 5, 8],
+              exponents=[3, 3, 3],
+              threshold=1.0,
+          )
+          assert res_void.decision == GateDecision.VOID, f"Expected VOID, got {res_void.decision}"
+          assert res_void.reason == GateReason.NO_COMMON_SOURCE, f"Expected NO_COMMON_SOURCE, got {res_void.reason}"
+          assert res_void.gcd_value == 1
+          assert res_void.source_present is False
+          assert res_void.is_triggered is True
+
+          # 3. Verification of singleton input (k=1 sequence, PROJECT_PROPOSAL)
+          res_single = evaluate_discrete_gate(
+              numbers=[5],
+              exponents=[3],
+              threshold=1.0,
+          )
+          assert res_single.decision == GateDecision.PASS, f"Expected PASS, got {res_single.decision}"
+          assert res_single.gcd_value == 5
+          assert res_single.source_present is True
+
+          print("External import and execution smoke test passed successfully.")
+          '
+
+      - name: Install test and contract dependencies
+        run: |
+          pip install pytest jsonschema
+
+      - name: Run full test suite and JSON Schema validation
+        run: |
+          pytest tests/ -v

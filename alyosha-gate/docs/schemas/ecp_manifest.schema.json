@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://alyosha-gate.org/schemas/ecp_manifest.schema.json",
+  "title": "Engineering Constructor Primitive (ECP) Manifest",
+  "description": "Formal JSON Schema for validating ECP manifests in the Alyosha Gate repository.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "type",
+    "package",
+    "version",
+    "normative_authority",
+    "purpose",
+    "interfaces",
+    "algorithm",
+    "guarantees",
+    "limitations",
+    "dependencies",
+    "epistemic_status"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^AG-ECP-\\d{3}$"
+    },
+    "name": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "const": "Engineering Constructor Primitive (ECP)"
+    },
+    "package": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "normative_authority": {
+      "type": "string"
+    },
+    "status": {
+      "type": "object",
+      "required": ["rectified", "source_faithful"],
+      "properties": {
+        "rectified": { "type": "string" },
+        "source_faithful": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "interfaces": {
+      "type": "object",
+      "required": ["module", "entry_points", "inputs", "outputs"],
+      "properties": {
+        "module": { "type": "string" },
+        "entry_points": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "inputs": {
+          "type": "object",
+          "required": ["numbers", "exponents", "threshold", "mode", "check_exponent_limit"],
+          "properties": {
+            "numbers": { "type": "object" },
+            "exponents": { "type": "object" },
+            "threshold": { "type": "object" },
+            "mode": { "type": "object" },
+            "check_exponent_limit": { "type": "object" }
+          },
+          "additionalProperties": false
+        },
+        "outputs": {
+          "type": "object",
+          "required": [
+            "is_triggered",
+            "decision",
+            "mode",
+            "reason",
+            "status_message",
+            "gcd_value",
+            "source_present",
+            "dmod_value",
+            "threshold_value",
+            "metadata"
+          ],
+          "properties": {
+            "is_triggered": { "type": "object" },
+            "decision": { "type": "object" },
+            "mode": { "type": "object" },
+            "reason": { "type": "object" },
+            "status_message": { "type": "object" },
+            "gcd_value": { "type": "object" },
+            "source_present": { "type": "object" },
+            "dmod_value": { "type": "object" },
+            "threshold_value": { "type": "object" },
+            "metadata": { "type": "object" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "algorithm": {
+      "type": "object",
+      "minProperties": 1
+    },
+    "guarantees": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "dependencies": {
+      "type": "object",
+      "required": ["python", "std_modules", "external_packages"],
+      "properties": {
+        "python": { "type": "string" },
+        "std_modules": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "external_packages": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "epistemic_status": {
+      "type": "object",
+      "required": [
+        "gcd_criterion",
+        "dmod_formula",
+        "threshold_constant",
+        "balu_exponent_limit",
+        "branch_priority_order",
+        "n_ary_vector_generalization",
+        "reason_enums",
+        "source_faithful_lock",
+        "source_verified_count"
+      ],
+      "properties": {
+        "gcd_criterion": { "type": "string" },
+        "dmod_formula": { "type": "string" },
+        "threshold_constant": { "type": "string" },
+        "balu_exponent_limit": { "type": "string" },
+        "branch_priority_order": { "type": "string" },
+        "n_ary_vector_generalization": { "type": "string" },
+        "reason_enums": { "type": "string" },
+        "source_faithful_lock": { "type": "string" },
+        "source_verified_count": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

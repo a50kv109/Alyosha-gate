@@ -1,0 +1,102 @@
+{
+  "$schema": "schemas/ecp_manifest.schema.json",
+  "id": "AG-ECP-001",
+  "name": "discrete_gate",
+  "type": "Engineering Constructor Primitive (ECP)",
+  "package": "alyosha-gate",
+  "version": "0.1.0-alpha.1",
+  "normative_authority": "docs/ECP_DISCRETE_GATE.md",
+  "status": {
+    "rectified": "PROJECT_PROPOSAL",
+    "source_faithful": "BLOCKED"
+  },
+  "purpose": "Experimental candidate filter in the context of the Beal conjecture (not a solver or proof) performing deterministic preliminary screening under specified conditions.",
+  "interfaces": {
+    "module": "alyosha_gate.discrete",
+    "entry_points": [
+      "alyosha_gate.evaluate_discrete_gate",
+      "alyosha_gate.RectifiedDiscreteGate.evaluate"
+    ],
+    "inputs": {
+      "numbers": {
+        "type": "Sequence[int]",
+        "constraints": "len >= 1 (This is the behavior of the current implementation. Its mathematical justification and correspondence to the primary source have not been confirmed; triads canonical), all elements > 0, strict int (no bool, no float)"
+      },
+      "exponents": {
+        "type": "Sequence[int]",
+        "constraints": "len == len(numbers), all elements >= 1, strict int (no bool, no float)"
+      },
+      "threshold": {
+        "type": "float",
+        "default": 1.0,
+        "constraints": "finite float > 0.0, no NaN, no inf, no bool"
+      },
+      "mode": {
+        "type": "str | GateMode",
+        "default": "rectified",
+        "enum": ["rectified", "source_faithful"]
+      },
+      "check_exponent_limit": {
+        "type": "bool",
+        "default": true
+      }
+    },
+    "outputs": {
+      "is_triggered": {"type": "bool"},
+      "decision": {"type": "str", "enum": ["PASS", "VOID"]},
+      "mode": {"type": "str", "enum": ["rectified", "source_faithful"]},
+      "reason": {
+        "type": "str",
+        "enum": [
+          "SOURCE_IDENTIFIED",
+          "NO_COMMON_SOURCE",
+          "DMOD_THRESHOLD_EXCEEDED",
+          "EXPONENT_LIMIT_EXCLUSION"
+        ]
+      },
+      "status_message": {"type": "str"},
+      "gcd_value": {"type": "int"},
+      "source_present": {"type": "bool"},
+      "dmod_value": {"type": "float"},
+      "threshold_value": {"type": "float"},
+      "metadata": {"type": "dict"}
+    }
+  },
+  "algorithm": {
+    "step_1": "Strict precondition and type validation on raw inputs",
+    "step_2": "Calculate common_gcd = math.gcd(*numbers) and source_present = (common_gcd > 1)",
+    "step_3": "Calculate dmod = round((sum(exponents) / 100.0) + (0.0 if source_present else 1.0), 10)",
+    "step_4": "If check_exponent_limit and min(exponents) <= 2 -> VOID (reason: EXPONENT_LIMIT_EXCLUSION)",
+    "step_5": "If not source_present -> VOID (reason: NO_COMMON_SOURCE)",
+    "step_6": "If dmod >= threshold -> VOID (reason: DMOD_THRESHOLD_EXCEEDED)",
+    "step_7": "Else -> PASS (reason: SOURCE_IDENTIFIED)"
+  },
+  "guarantees": [
+    "Deterministic execution",
+    "Zero runtime external dependencies (Python standard library only)",
+    "Defensive input immutability via frozen tuples",
+    "Preservation of mathematical diagnostics in VOID results"
+  ],
+  "limitations": [
+    "NOT a Diophantine equation solver (PASS indicates that the candidate passed the checks of this filter; by itself, this result does not prove numerical equality, the existence of a solution, or the truth of a theorem)",
+    "Early screening tool: Performance was not measured; the impact of the filter on execution time and operation count is unknown",
+    "NOT an academic proof engine",
+    "source_faithful mode is locked until authentic Zenodo listing is ingested"
+  ],
+  "dependencies": {
+    "python": ">=3.11",
+    "std_modules": ["math", "dataclasses", "enum", "typing"],
+    "external_packages": []
+  },
+  "epistemic_status": {
+    "gcd_criterion": "REPORTED",
+    "dmod_formula": "REPORTED (scaling /100 and tamas penalty are implementation choices not verified in primary source)",
+    "threshold_constant": "REPORTED",
+    "balu_exponent_limit": "REPORTED",
+    "branch_priority_order": "PROJECT_PROPOSAL (exponent limit check <= 2 evaluated prior to gcd check)",
+    "n_ary_vector_generalization": "PROJECT_PROPOSAL (This is the behavior of the current implementation. Its mathematical justification and correspondence to the primary source have not been confirmed)",
+    "reason_enums": "PROJECT_PROPOSAL",
+    "source_faithful_lock": "PROJECT_PROPOSAL",
+    "source_verified_count": 0
+  }
+}

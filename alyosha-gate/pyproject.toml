@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alyosha-gate"
+version = "0.1.0-alpha.1"
+description = "Deterministic safety gate and residual verification toolkit (AAM-V1 Ecosystem) - Discrete Gate Phase 1"
+readme = "README.md"
+authors = [
+    { name = "Alyosha Gate Contributors" }
+]
+requires-python = ">=3.11"
+license = { text = "MIT" }
+keywords = ["safety-gate", "deterministic-verification", "beal-conjecture", "aam-v1", "zero-cycle-filter"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Typing :: Typed",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
