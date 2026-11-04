@@ -1,7 +1,7 @@
 # Project Overview: `alyosha-gate`
 
 ## 1. Context & Purpose
-`alyosha-gate` is an independent, embeddable Python library designed to provide deterministic verification, mathematical gatekeeping, and residual stabilization primitives derived from the **AAM-V1 Methodology (Artsybashev Analysis Method)**.
+`alyosha-gate` is an independent, embeddable Python library designed to provide deterministic verification, mathematical gatekeeping, and residual stabilization primitives derived from the **AAM-V1 Methodology (Artsybashev Analysis Method; метод анализа Арцыбашева)**.
 
 In the broad architectural ecosystem, **Alyosha Gate** refers to a triad of gating mechanisms:
 1. **Discrete Gate (Preliminary Screening Filter):** Performs deterministic preliminary screening of candidate integer sequences under specified conditions (Greatest Common Divisor source verification, empirical DMOD chaos evaluation, and exponent boundary checking). It is an experimental candidate filter in the context of the Beal conjecture (not a solver or proof).

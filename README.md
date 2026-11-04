@@ -10,7 +10,7 @@
 ---
 
 ## 1. What is `alyosha-gate`?
-`alyosha-gate` is an experimental candidate filter in the context of the Beal conjecture (it is not a solver or mathematical proof). It performs deterministic preliminary screening of candidates under specified conditions, derived from the **AAM-V1 methodology (Artsybashev Analysis Method)**.
+`alyosha-gate` is an experimental candidate filter in the context of the Beal conjecture (it is not a solver or mathematical proof). It performs deterministic preliminary screening of candidates under specified conditions, derived from the **AAM-V1 methodology (Artsybashev Analysis Method; метод анализа Арцыбашева)**.
 
 In Phase 1, this package provides the **Discrete Gate (Preliminary Screening Filter)** — a preliminary screening mechanism for candidate integer sequences and exponents via:
 * **Common Source Verification:** Greatest Common Divisor ($\gcd > 1$) checks on candidate bases.

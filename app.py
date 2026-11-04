@@ -31,7 +31,7 @@ HTML_PAGE = """<!DOCTYPE html>
             </div>
             <div>
                 <h1 class="text-lg font-bold tracking-tight">Alyosha Gate Explorer</h1>
-                <p class="text-xs text-slate-400">AG-ECP-001 Deterministic Candidate Filtering System</p>
+                <p class="text-xs text-slate-400">AG-ECP-001 Deterministic Candidate Filtering System (AAM-V1 Methodology; метод анализа Арцыбашева)</p>
             </div>
         </div>
         <div class="flex items-center space-x-4 text-sm">
@@ -138,7 +138,7 @@ HTML_PAGE = """<!DOCTYPE html>
                         <span>Alyosha Gate / AG-ECP-001</span>
                     </h2>
                     <p class="text-slate-300 leading-relaxed">
-                        Alyosha Gate is an experimental Python filter for preliminary candidate sequence filtering related to Beal's Conjecture. It performs deterministic preliminary checks; it is not a prover or decision maker.
+                        Alyosha Gate is an experimental Python filter for preliminary candidate sequence filtering related to Beal's Conjecture, derived from AAM-V1 methodology (Artsybashev Analysis Method; метод анализа Арцыбашева). It performs deterministic preliminary checks; it is not a prover or decision maker.
                     </p>
                     <div class="border-t border-slate-800 pt-4 space-y-2 text-sm text-slate-400">
                         <p><strong>License:</strong> MIT License (Copyright (c) 2026 Арцыбашев Андрей Алексеевич)</p>
