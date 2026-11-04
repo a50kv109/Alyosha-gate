@@ -1,6 +1,0 @@
-{
-  "name": "Alyosha Gate Explorer & Simulator (AAM-V1)",
-  "description": "Interactive playground, specification explorer, and verification runtime for Alyosha Gate (Zero-Cycle Filter, MCRG, and Trajectory Telemetry).",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
